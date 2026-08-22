@@ -1,0 +1,37 @@
+# 自動ログイン対象アプリの設定
+# 「キラメキのトリ」アプリ用テンプレート。値は実機で調査した内容に置き換えてください。
+
+device:
+  # `adb devices` で表示されるシリアル番号。空文字なら接続中の1台目を自動使用
+  serial: ""
+
+app:
+  # 対象アプリのパッケージ名。 `adb shell pm list packages | grep -i kirameki` 等で調べる
+  package_name: "com.example.kiramekinotori"
+
+  # アプリ起動後、ホーム画面が表示されるまでの待機秒数
+  launch_wait_seconds: 5
+
+  # スクラッチ(またはログインボーナス)ボタンを開くまでの手順。
+  # 各ステップは "text"(表示文字列) か "resource_id"(UIAutomatorのID) のどちらかを指定する。
+  # 実機のUI構造を `python -m uiautomator2 dump` 等で調べて埋めること。
+  steps:
+    - action: tap
+      text: "スクラッチ" # 例: トップ画面の「スクラッチ」ボタン
+    - action: wait
+      seconds: 2
+    - action: tap
+      text: "けずる" # 例: スクラッチ実行ボタン
+    - action: wait
+      seconds: 2
+    - action: tap
+      text: "閉じる" # 結果ダイアログを閉じる
+
+schedule:
+  # 毎日実行する時刻 (24時間表記, ローカルタイム)
+  hour: 9
+  minute: 0
+
+logging:
+  # 実行結果のスクリーンショットを保存するディレクトリ
+  screenshot_dir: "./logs"
